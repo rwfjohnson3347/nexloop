@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexloop — Industrial Reliability</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #0d1117;
+      --surface:    #161c24;
+      --surface2:   #1a2232;
+      --border:     #21293a;
+      --text:       #e6edf3;
+      --muted:      #7d8898;
+      --accent:     #2f81f7;
+      --accent-dim: rgba(47, 129, 247, 0.10);
+      --radius:     6px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ── Navigation ── */
+    nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 200;
+      height: 64px;
+      padding: 0 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(13, 17, 23, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    .logo-icon {
+      width: 26px;
+      height: 30px;
+      flex-shrink: 0;
+    }
+
+    .logo-text {
+      font-family: 'Nunito', 'Inter', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      background: linear-gradient(140deg, #cdd5dc 0%, #8aaec8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 400;
+      transition: color 0.18s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-links .nav-cta {
+      color: #fff;
+      background: var(--accent);
+      padding: 7px 18px;
+      border-radius: var(--radius);
+      font-weight: 500;
+      transition: background 0.18s, color 0.18s;
+    }
+    .nav-links .nav-cta:hover { background: #4a90f7; color: #fff; }
+
+    .nav-hamburger {
+      display: none;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    /* ── Layout ── */
+    section { padding: 96px 48px; }
+    .container { max-width: 1080px; margin: 0 auto; }
+    hr.sep { border: none; border-top: 1px solid var(--border); }
+
+    /* ── Hero ── */
+    #hero {
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      padding-top: 140px;
+      padding-bottom: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle dot grid texture */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(47,129,247,0.06) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+    }
+    /* Fade grid toward bottom */
+    #hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 60%, var(--bg) 100%);
+      pointer-events: none;
+    }
+
+    .hero-inner { position: relative; z-index: 1; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 28px;
+    }
+    .eyebrow-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse-dot 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    h1 {
+      font-size: clamp(2.25rem, 5.5vw, 3.75rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.08;
+      max-width: 760px;
+      margin-bottom: 28px;
+    }
+
+    .hero-desc {
+      font-size: 1.0625rem;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.75;
+      margin-bottom: 48px;
+      font-weight: 400;
+    }
+
+    .hero-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      padding: 13px 26px;
+      border-radius: var(--radius);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1px solid transparent;
+      transition: background 0.18s;
+      white-space: nowrap;
+    }
+    .btn-primary:hover { background: #4a90f7; }
+
+    .btn-ghost {
+      display: inline-block;
+      color: var(--muted);
+      padding: 13px 22px;
+      font-size: 0.9375rem;
+      text-decoration: none;
+      transition: color 0.18s;
+      white-space: nowrap;
+    }
+    .btn-ghost:hover { color: var(--text); }
+
+    /* ── Section headings ── */
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    h2 {
+      font-size: clamp(1.625rem, 3vw, 2.375rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      margin-bottom: 18px;
+    }
+
+    .section-desc {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 540px;
+      line-height: 1.75;
+      margin-bottom: 56px;
+    }
+
+    /* ── Capabilities cards ── */
+    .cap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .cap-card {
+      background: var(--surface);
+      padding: 36px 32px;
+      border-right: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+    .cap-card:last-child { border-right: none; }
+    .cap-card:hover { background: var(--surface2); }
+
+    .cap-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(47,129,247,0.2);
+      color: var(--accent);
+      margin-bottom: 22px;
+    }
+    .cap-icon svg { width: 20px; height: 20px; }
+
+    .cap-card h3 {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
+    }
+
+    .cap-card p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── Approach steps ── */
+    #approach { background: var(--surface); }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .step {
+      padding: 32px 28px;
+      border-right: 1px solid var(--border);
+      position: relative;
+    }
+    .step:last-child { border-right: none; }
+
+    .step-num {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 16px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .step h3 {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
+    }
+
+    .step p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── Use cases / context strip ── */
+    #context { padding: 72px 48px; }
+
+    .context-inner {
+      display: flex;
+      align-items: flex-start;
+      gap: 80px;
+    }
+
+    .context-left { flex: 0 0 340px; }
+
+    .context-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .context-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .context-list li::before {
+      content: '';
+      flex-shrink: 0;
+      margin-top: 7px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.7;
+    }
+
+    .context-right {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .context-card {
+      background: var(--surface);
+      padding: 28px 26px;
+    }
+
+    .context-card .label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .context-card p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── Contact ── */
+    #contact { background: var(--bg); }
+
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .contact-left p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-top: 16px;
+    }
+
+    .contact-note {
+      margin-top: 32px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.8125rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    form { display: flex; flex-direction: column; gap: 16px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 5px;
+      letter-spacing: 0.01em;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      padding: 11px 13px;
+      outline: none;
+      transition: border-color 0.18s, background 0.18s;
+    }
+
+    input::placeholder, textarea::placeholder { color: var(--muted); opacity: 0.6; }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: rgba(47,129,247,0.6);
+      background: var(--surface2);
+    }
+
+    textarea { resize: vertical; min-height: 110px; line-height: 1.6; }
+
+    .form-group { display: flex; flex-direction: column; }
+
+    button[type="submit"] {
+      align-self: flex-start;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 12px 26px;
+      border-radius: var(--radius);
+      font-family: inherit;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+    button[type="submit"]:hover:not(:disabled) { background: #4a90f7; }
+    button[type="submit"]:disabled { opacity: 0.7; cursor: not-allowed; }
+
+    /* ── Footer ── */
+    footer {
+      padding: 32px 48px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .footer-logo .logo-icon {
+      width: 20px;
+      height: 23px;
+    }
+
+    .footer-logo .logo-text {
+      font-family: 'Nunito', 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      background: linear-gradient(140deg, #cdd5dc 0%, #8aaec8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .footer-right {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* ── Fade-in ── */
+    .fade {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .fade.visible { opacity: 1; transform: none; }
+
+    /* ── Mobile ── */
+    @media (max-width: 900px) {
+      .cap-grid { grid-template-columns: 1fr; }
+      .cap-card { border-right: none; border-bottom: 1px solid var(--border); }
+      .cap-card:last-child { border-bottom: none; }
+      .steps-grid { grid-template-columns: 1fr 1fr; }
+      .step:nth-child(2) { border-right: none; }
+      .step:nth-child(3) { border-top: 1px solid var(--border); }
+      .step:nth-child(4) { border-top: 1px solid var(--border); border-right: none; }
+      .context-inner { flex-direction: column; gap: 40px; }
+      .context-left { flex: none; width: 100%; }
+      .contact-layout { grid-template-columns: 1fr; gap: 48px; }
+    }
+
+    @media (max-width: 680px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      section { padding: 72px 20px; }
+      #hero { padding: 130px 20px 72px; }
+      #context { padding: 72px 20px; }
+      footer { padding: 28px 20px; flex-direction: column; gap: 10px; text-align: center; }
+      .form-row { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .step { border-right: none; border-bottom: 1px solid var(--border); }
+      .step:last-child { border-bottom: none; }
+      .context-right { grid-template-columns: 1fr; }
+    }
+
+    /* Mobile nav overlay */
+    .nav-overlay {
+      display: none;
+      position: fixed;
+      inset: 64px 0 0 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 24px 24px;
+      z-index: 199;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .nav-overlay.open { display: flex; }
+    .nav-overlay a {
+      display: block;
+      padding: 12px 4px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 1rem;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.18s;
+    }
+    .nav-overlay a:last-child { border-bottom: none; }
+    .nav-overlay a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ── -->
+  <nav>
+    <a href="#" class="logo">
+      <svg class="logo-icon" viewBox="0 0 28 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="nlg1" x1="2" y1="1" x2="26" y2="31" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#cdd5dc"/>
+            <stop offset="100%" stop-color="#8aaec8"/>
+          </linearGradient>
+        </defs>
+        <path d="M14 1.5 L3 6.2 L3 14 C3 21.2 7.8 27.6 14 30 C20.2 27.6 25 21.2 25 14 L25 6.2 Z" stroke="url(#nlg1)" stroke-width="1.75" stroke-linejoin="round" fill="none"/>
+        <path d="M16.8 9 L11.2 17 L15.2 17 L11.2 24.5 L19 14.5 L15 14.5 Z" fill="url(#nlg1)"/>
+      </svg>
+      <span class="logo-text">Nexloop</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#capabilities">Capabilities</a></li>
+      <li><a href="#approach">Approach</a></li>
+      <li><a href="#context">Use Cases</a></li>
+      <li><a href="#contact" class="nav-cta">Get in Touch</a></li>
+    </ul>
+    <button class="nav-hamburger" aria-label="Open menu" onclick="toggleNav()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <rect y="2" width="16" height="1.5" rx="1"/>
+        <rect y="7.25" width="16" height="1.5" rx="1"/>
+        <rect y="12.5" width="16" height="1.5" rx="1"/>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Mobile nav overlay -->
+  <div class="nav-overlay" id="navOverlay">
+    <a href="#capabilities" onclick="toggleNav()">Capabilities</a>
+    <a href="#approach" onclick="toggleNav()">Approach</a>
+    <a href="#context" onclick="toggleNav()">Use Cases</a>
+    <a href="#contact" onclick="toggleNav()">Get in Touch</a>
+  </div>
+
+  <!-- ── Hero ── -->
+  <section id="hero">
+    <div class="container hero-inner">
+      <div class="eyebrow">
+        <span class="eyebrow-dot"></span>
+        Industrial Reliability
+      </div>
+      <h1>Know what's failing before it stops production.</h1>
+      <p class="hero-desc">
+        Nexloop gives maintenance and operations teams continuous visibility into equipment health — so interventions happen on your schedule, not the equipment's.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">Talk to us</a>
+        <a href="#capabilities" class="btn-ghost">See capabilities →</a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ── Capabilities ── -->
+  <section id="capabilities">
+    <div class="container">
+      <p class="section-label fade">Capabilities</p>
+      <h2 class="fade">Built for operational teams.</h2>
+      <p class="section-desc fade">Three core problems that drive unplanned downtime and maintenance blind spots — addressed with practical, deployable tooling.</p>
+
+      <div class="cap-grid fade">
+
+        <div class="cap-card" style="transition-delay:0ms">
+          <div class="cap-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+          </div>
+          <h3>Equipment Monitoring</h3>
+          <p>Continuous sensing across critical assets — motors, pumps, compressors, and conveyors — with configurable alert thresholds and anomaly detection tuned to each machine's operating profile.</p>
+        </div>
+
+        <div class="cap-card" style="transition-delay:80ms">
+          <div class="cap-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </div>
+          <h3>Predictive Diagnostics</h3>
+          <p>Signal analysis that separates normal operational variance from developing faults. Maintenance teams get lead time and fault context — not just an alarm that something is wrong.</p>
+        </div>
+
+        <div class="cap-card" style="transition-delay:160ms">
+          <div class="cap-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+            </svg>
+          </div>
+          <h3>Maintenance Visibility</h3>
+          <p>Clear reporting on asset condition, service history, and upcoming intervention needs — structured so maintenance planners and operations supervisors can both act on it without translation.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ── Approach ── -->
+  <section id="approach">
+    <div class="container">
+      <p class="section-label fade">How We Work</p>
+      <h2 class="fade">Operational quickly. No year-long integration.</h2>
+      <p class="section-desc fade">Nexloop is designed for fast, low-disruption deployment. We work alongside your maintenance team — not around them.</p>
+
+      <div class="steps-grid fade">
+
+        <div class="step">
+          <p class="step-num">01</p>
+          <h3>Site Assessment</h3>
+          <p>We identify the highest-risk assets and failure modes with your team before installing anything. The deployment scope is defined by your actual exposure, not a default template.</p>
+        </div>
+
+        <div class="step">
+          <p class="step-num">02</p>
+          <h3>Sensor Deployment</h3>
+          <p>Wireless sensors fitted to critical equipment — no production interruption, no hardwiring, no modifications to existing control systems or PLCs.</p>
+        </div>
+
+        <div class="step">
+          <p class="step-num">03</p>
+          <h3>Baseline and Calibration</h3>
+          <p>We establish normal operating signatures for each asset across load conditions before tuning detection thresholds to your specific environment and tolerance for false positives.</p>
+        </div>
+
+        <div class="step">
+          <p class="step-num">04</p>
+          <h3>Ongoing Monitoring</h3>
+          <p>Your team receives alerts with operational context — what's degrading, at what rate, and what intervention is indicated — so they can plan, not react.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ── Context / Use Cases ── -->
+  <section id="context">
+    <div class="container">
+      <div class="context-inner fade">
+
+        <div class="context-left">
+          <p class="section-label">Where We Work</p>
+          <h2 style="max-width:280px;">Industrial environments that can't afford surprises.</h2>
+          <p style="font-size:0.875rem;color:var(--muted);line-height:1.75;margin-top:16px;margin-bottom:28px;">Nexloop is suited to facilities where unplanned equipment failure has direct production, safety, or cost consequences — and where maintenance teams are managing complex asset populations with limited visibility.</p>
+          <ul class="context-list">
+            <li>Manufacturing and assembly lines</li>
+            <li>Food and beverage processing</li>
+            <li>Water and wastewater treatment</li>
+            <li>Mining and bulk material handling</li>
+            <li>Industrial HVAC and utilities</li>
+            <li>Packaging and logistics equipment</li>
+          </ul>
+        </div>
+
+        <div class="context-right">
+          <div class="context-card">
+            <p class="label">Problem</p>
+            <p>Maintenance teams respond to failures after they happen — with no warning and no time to plan parts, labour, or production impact.</p>
+          </div>
+          <div class="context-card">
+            <p class="label">What changes</p>
+            <p>Equipment degradation surfaces early. Teams schedule intervention during planned downtime windows rather than scrambling on failure.</p>
+          </div>
+          <div class="context-card">
+            <p class="label">Problem</p>
+            <p>Preventive maintenance schedules are based on calendar intervals, not actual machine condition — generating unnecessary work and masking real risk.</p>
+          </div>
+          <div class="context-card">
+            <p class="label">What changes</p>
+            <p>Maintenance is driven by equipment state rather than elapsed time. High-risk assets get more attention; healthy ones get less.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- ── Contact ── -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-layout">
+
+        <div class="contact-left fade">
+          <p class="section-label">Contact</p>
+          <h2>Start a conversation.</h2>
+          <p>We work with a limited number of facilities at a time to ensure reliable outcomes. If you're dealing with unplanned downtime, reactive maintenance, or limited equipment visibility, we'd like to hear about it.</p>
+          <div class="contact-note">
+            We don't do discovery calls built around a demo deck. Initial conversations are focused on your specific equipment and operational context — so bring the real problem.
+          </div>
+        </div>
+
+        <form class="fade" onsubmit="handleSubmit(event)" style="transition-delay:120ms">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" placeholder="Your name" required>
+            </div>
+            <div class="form-group">
+              <label for="company">Facility / Company</label>
+              <input type="text" id="company" name="company" placeholder="Where you operate">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="your@email.com" required>
+          </div>
+          <div class="form-group">
+            <label for="role">Role</label>
+            <input type="text" id="role" name="role" placeholder="e.g. Maintenance Manager, Plant Engineer">
+          </div>
+          <div class="form-group">
+            <label for="message">What are you dealing with?</label>
+            <textarea id="message" name="message" placeholder="Describe your equipment reliability challenges — asset types, failure patterns, current approach..."></textarea>
+          </div>
+          <button type="submit" id="submit-btn">Send Message</button>
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="footer-logo">
+      <svg class="logo-icon" viewBox="0 0 28 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="nlg2" x1="2" y1="1" x2="26" y2="31" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#cdd5dc"/>
+            <stop offset="100%" stop-color="#8aaec8"/>
+          </linearGradient>
+        </defs>
+        <path d="M14 1.5 L3 6.2 L3 14 C3 21.2 7.8 27.6 14 30 C20.2 27.6 25 21.2 25 14 L25 6.2 Z" stroke="url(#nlg2)" stroke-width="1.75" stroke-linejoin="round" fill="none"/>
+        <path d="M16.8 9 L11.2 17 L15.2 17 L11.2 24.5 L19 14.5 L15 14.5 Z" fill="url(#nlg2)"/>
+      </svg>
+      <span class="logo-text">Nexloop</span>
+    </div>
+    <div class="footer-right">&copy; 2026 Nexloop. All rights reserved.</div>
+  </footer>
+
+  <script>
+    // Fade-in on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+
+    document.querySelectorAll('.fade').forEach(el => io.observe(el));
+
+    // Form submission feedback
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      btn.textContent = 'Message sent.';
+      btn.disabled = true;
+      btn.style.background = '#1a6e3c';
+      setTimeout(() => {
+        btn.textContent = 'Send Message';
+        btn.disabled = false;
+        btn.style.background = '';
+        e.target.reset();
+      }, 4000);
+    }
+
+    // Mobile nav toggle
+    function toggleNav() {
+      const overlay = document.getElementById('navOverlay');
+      overlay.classList.toggle('open');
+    }
+
+    // Close mobile nav on outside click
+    document.addEventListener('click', (e) => {
+      const overlay = document.getElementById('navOverlay');
+      if (overlay.classList.contains('open') && !overlay.contains(e.target) && !e.target.closest('.nav-hamburger')) {
+        overlay.classList.remove('open');
+      }
+    });
+  </script>
+
+</body>
+</html>
